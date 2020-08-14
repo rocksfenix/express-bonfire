@@ -108,6 +108,25 @@ app.get('/login', (req, res) => {
 app.use(errorMiddleware)
 ```
 
+# code
+You can pass code inside of parentheses eg: (7891) for handling responses on client-side
+```javascript
+app.get('/login', (req, res) => {
+  if (!req.body.email) {
+    dispatchError('422: Email was not included (8749)')
+  }
+})
+
+// JSON Response: 422
+// On clinet-side you can handling the error code for 8749
+{
+  "message": "Email was not included",
+  "code": 8749,
+  "error": true
+}
+```
+
+
 ## Extra Data
 
 ```javascript

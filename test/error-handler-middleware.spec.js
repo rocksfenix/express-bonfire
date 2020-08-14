@@ -106,6 +106,48 @@ describe('Test Middleware: errorMiddleware', () => {
       errorMiddleware(error, {}, res)
     }
   })
+
+  it('Test with code', () => {
+    try {
+      dispatchError('204: Yeep! (7891)')
+    } catch (error) {
+      // Mock response express.js methods
+      const res = {
+        status (code) {
+          expect(code).to.equal(204)
+          return this
+        },
+        json (data) {
+          expect(data.message).to.equal('Yeep!')
+          expect(data.code).to.equal(7891)
+          return this
+        }
+      }
+
+      errorMiddleware(error, {}, res)
+    }
+  })
+
+  it('Test with code with spaces', () => {
+    try {
+      dispatchError('204 : Yeep! (  891 )')
+    } catch (error) {
+      // Mock response express.js methods
+      const res = {
+        status (code) {
+          expect(code).to.equal(204)
+          return this
+        },
+        json (data) {
+          expect(data.message).to.equal('Yeep!')
+          expect(data.code).to.equal(891)
+          return this
+        }
+      }
+
+      errorMiddleware(error, {}, res)
+    }
+  })
 })
 
 describe('Test Custom errorDispatchFunction', () => {
@@ -171,6 +213,55 @@ describe('Test Custom errorDispatchFunction', () => {
         },
         json (data) {
           expect(data.message).to.equal('Yeep!')
+          return this
+        }
+      }
+
+      errorMiddleware(error, {}, res)
+    }
+  })
+
+  it('Test with code', () => {
+    const customDispatch = DispatchErrorCustom({
+      divider: '=>'
+    })
+
+    try {
+      customDispatch('204 => Yeep! (7891)')
+    } catch (error) {
+      // Mock response express.js methods
+      const res = {
+        status (code) {
+          expect(code).to.equal(204)
+          return this
+        },
+        json (data) {
+          expect(data.message).to.equal('Yeep!')
+          expect(data.code).to.equal(7891)
+          return this
+        }
+      }
+
+      errorMiddleware(error, {}, res)
+    }
+  })
+
+  it('Test with code with spaces', () => {
+    const customDispatch = DispatchErrorCustom({
+      divider: '=>'
+    })
+    try {
+      customDispatch('204 => Yeep! (  891 )')
+    } catch (error) {
+      // Mock response express.js methods
+      const res = {
+        status (code) {
+          expect(code).to.equal(204)
+          return this
+        },
+        json (data) {
+          expect(data.message).to.equal('Yeep!')
+          expect(data.code).to.equal(891)
           return this
         }
       }
