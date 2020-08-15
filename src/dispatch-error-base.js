@@ -7,30 +7,30 @@ const getParsedInfo = require('./get-parsed-info')
     statusHTTP: 200 - Status http send on request
     message: 'Something is wrong' - Error message for humans
     code: 0 - Error code message for apis
-    divider: ':' - Divider for code example "404: "Resource not found"
-    customSplitPattern: null - RegExp for divider or split the text
+    dividers: ['|', '=>', '->'] - eg: "404 => "Resource is not found"
   }
 */
 const DispatchError = (config = {}) => {
-  let {
+  const {
     statusHTTP,
     message,
-    divider,
-    customSplitPattern
+    dividers,
+    customSplitPattern,
+    errorCode
   } = config
 
   return (input = '', extraData = {}) => {
     const data = getParsedInfo({
       input,
       customSplitPattern,
-      divider,
+      dividers
     })
 
     const error = new Error(data.message || message)
     error.statusHTTP = data.statusHTTP || statusHTTP
     error.infoStatusHttp = data.infoStatusHttp
+    error.errorCode = data.errorCode || errorCode
     error.extraData = extraData
-    error.code = data.code
     throw error
   }
 }

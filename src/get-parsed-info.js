@@ -1,6 +1,7 @@
 const getCleanMessage = require('./get-clean-message')
 const getCodeStatusInfo = require('./get-code-status-info')
 const getCode = require('./get-code')
+const getSplitChar = require('./get-split-char')
 
 /**
 * @method getParsedInfo
@@ -19,25 +20,21 @@ const getCode = require('./get-code')
 const getParsedInfo = (config) => {
   const {
     input,
-    divider,
-    customSplitPattern
+    dividers
   } = config
 
+  const splitChar = getSplitChar(input, dividers)
+  const errorCode = getCode(input)
   const splited = input
-    .split(divider || customSplitPattern)
+    .split(splitChar)
     .map(item => item.trim())
     .filter(item => (item !== '' || item !== undefined))
-
-  const code = getCode(input)
 
   const data = {
     statusHTTP: null,
     message: '',
-    infoStatusHttp: getCodeStatusInfo(code)
-  }
-
-  if (code !== 0) {
-    data.code = code
+    infoStatusHttp: '',
+    errorCode
   }
 
   if (splited.length === 1) {
@@ -46,6 +43,7 @@ const getParsedInfo = (config) => {
 
   if (splited.length > 1) {
     data.message = getCleanMessage(splited[1])
+    data.infoStatusHttp = getCodeStatusInfo(splited[0])
   }
 
   if (!isNaN(parseInt(splited[0]))) {

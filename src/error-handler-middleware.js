@@ -18,14 +18,14 @@ const handleError = (error, req, res) => {
     info.errorStack = error.stack
   }
 
-  const { message, statusHTTP, code } = error
+  const { message, statusHTTP, errorCode } = error
 
   res
     .status(statusHTTP)
     .json({
       error: true,
       message,
-      code,
+      errorCode,
       ...info,
       ...error.extraData
     })

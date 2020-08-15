@@ -22,7 +22,7 @@ describe('Test dispatchError Function', () => {
 
   it('Test parse status code HTTP 404', () => {
     try {
-      dispatchError('404:Whoops!!!')
+      dispatchError('404|Whoops!!!')
     } catch (error) {
       expect(error.statusHTTP).to.equal(404)
     }
@@ -30,7 +30,7 @@ describe('Test dispatchError Function', () => {
 
   it('Test parse status code HTTP 500', () => {
     try {
-      dispatchError(' 500 : Whoops!!!')
+      dispatchError(' 500 | Whoops!!!')
     } catch (error) {
       expect(error.statusHTTP).to.equal(500)
     }
@@ -38,7 +38,7 @@ describe('Test dispatchError Function', () => {
 
   it('Test parse status code HTTP 202 with spaces', () => {
     try {
-      dispatchError('202 :  Whoops!!!')
+      dispatchError('202 =>  Whoops!!!')
     } catch (error) {
       expect(error.statusHTTP).to.equal(202)
     }
@@ -46,7 +46,7 @@ describe('Test dispatchError Function', () => {
 
   it('Send extra data in extraData', () => {
     try {
-      dispatchError('202 :  Whoops!!!', { moreInfo: 'Here!' })
+      dispatchError('202 |  Whoops!!!', { moreInfo: 'Here!' })
     } catch (error) {
       expect(error.extraData.moreInfo).to.equal('Here!')
     }

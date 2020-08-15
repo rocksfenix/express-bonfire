@@ -46,7 +46,7 @@ describe('Test Middleware: errorMiddleware', () => {
 
   it('Test custom message and HTTP code 404', () => {
     try {
-      dispatchError('404 : Not found ♥')
+      dispatchError('404 | Not found ♥')
     } catch (error) {
       // Mock response express.js methods
       const res = {
@@ -66,7 +66,7 @@ describe('Test Middleware: errorMiddleware', () => {
 
   it('Test custom message and HTTP code 500', () => {
     try {
-      dispatchError('500 : Server on 🔥')
+      dispatchError('500 | Server on 🔥')
     } catch (error) {
       // Mock response express.js methods
       const res = {
@@ -86,7 +86,7 @@ describe('Test Middleware: errorMiddleware', () => {
 
   it('Test width extra data', () => {
     try {
-      dispatchError('500 : Server on 🔥', {
+      dispatchError('500 | Server on 🔥', {
         other: '🦾'
       })
     } catch (error) {
@@ -109,7 +109,7 @@ describe('Test Middleware: errorMiddleware', () => {
 
   it('Test with code', () => {
     try {
-      dispatchError('204: Yeep! (7891)')
+      dispatchError('204| Yeep! (7891)')
     } catch (error) {
       // Mock response express.js methods
       const res = {
@@ -119,7 +119,7 @@ describe('Test Middleware: errorMiddleware', () => {
         },
         json (data) {
           expect(data.message).to.equal('Yeep!')
-          expect(data.code).to.equal(7891)
+          expect(data.errorCode).to.equal(7891)
           return this
         }
       }
@@ -130,7 +130,7 @@ describe('Test Middleware: errorMiddleware', () => {
 
   it('Test with code with spaces', () => {
     try {
-      dispatchError('204 : Yeep! (  891 )')
+      dispatchError('204 | Yeep! (  891 )')
     } catch (error) {
       // Mock response express.js methods
       const res = {
@@ -140,7 +140,7 @@ describe('Test Middleware: errorMiddleware', () => {
         },
         json (data) {
           expect(data.message).to.equal('Yeep!')
-          expect(data.code).to.equal(891)
+          expect(data.errorCode).to.equal(891)
           return this
         }
       }
@@ -153,7 +153,7 @@ describe('Test Middleware: errorMiddleware', () => {
 describe('Test Custom errorDispatchFunction', () => {
   const customDispatch = DispatchErrorCustom({
     message: 'Default message 😜',
-    divider: '|',
+    dividers: ['**', '>>'],
     statusHTTP: 500
   })
 
@@ -179,7 +179,7 @@ describe('Test Custom errorDispatchFunction', () => {
 
   it('Test custom divider |', () => {
     try {
-      customDispatch('201 | Works!')
+      customDispatch('201 >> Works!')
     } catch (error) {
       // Mock response express.js methods
       const res = {
@@ -197,37 +197,13 @@ describe('Test Custom errorDispatchFunction', () => {
     }
   })
 
-  it('Test custom divider with RegExp', () => {
-    const customDispatch = DispatchErrorCustom({
-      customSplitPattern: /\*{2}/g
-    })
-
-    try {
-      customDispatch('204 ** Yeep!')
-    } catch (error) {
-      // Mock response express.js methods
-      const res = {
-        status (code) {
-          expect(code).to.equal(204)
-          return this
-        },
-        json (data) {
-          expect(data.message).to.equal('Yeep!')
-          return this
-        }
-      }
-
-      errorMiddleware(error, {}, res)
-    }
-  })
-
   it('Test with code', () => {
     const customDispatch = DispatchErrorCustom({
-      divider: '=>'
+      dividers: ['=>>']
     })
 
     try {
-      customDispatch('204 => Yeep! (7891)')
+      customDispatch('204 =>> Yeep! (7891)')
     } catch (error) {
       // Mock response express.js methods
       const res = {
@@ -237,7 +213,7 @@ describe('Test Custom errorDispatchFunction', () => {
         },
         json (data) {
           expect(data.message).to.equal('Yeep!')
-          expect(data.code).to.equal(7891)
+          expect(data.errorCode).to.equal(7891)
           return this
         }
       }
@@ -248,10 +224,10 @@ describe('Test Custom errorDispatchFunction', () => {
 
   it('Test with code with spaces', () => {
     const customDispatch = DispatchErrorCustom({
-      divider: '=>'
+      dividers: ['++']
     })
     try {
-      customDispatch('204 => Yeep! (  891 )')
+      customDispatch('204 ++ Yeep! (  891 )')
     } catch (error) {
       // Mock response express.js methods
       const res = {
@@ -261,7 +237,7 @@ describe('Test Custom errorDispatchFunction', () => {
         },
         json (data) {
           expect(data.message).to.equal('Yeep!')
-          expect(data.code).to.equal(891)
+          expect(data.errorCode).to.equal(891)
           return this
         }
       }
