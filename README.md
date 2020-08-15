@@ -128,6 +128,9 @@ app.get('/login', (req, res, next) => {
 app.use(errorMiddleware)
 ```
 
+## Default separators
+The default separators to split the code status http and message are ``|``, ``=>``, ``->`` but you can chage, creating a custom dispatcherError function.
+
 ## code
 You can pass code inside of parentheses eg: (7891) for handling responses on client-side
 ```javascript
