@@ -23,13 +23,14 @@ const DispatchError = (config = {}) => {
     const data = getParsedInfo({
       input,
       customSplitPattern,
-      dividers
+      dividers,
+      statusHTTP
     })
 
     const error = new Error(data.message || message)
-    error.statusHTTP = data.statusHTTP || statusHTTP
-    error.infoStatusHttp = data.infoStatusHttp
     error.errorCode = data.errorCode || errorCode
+    error.statusHTTP = data.statusHTTP
+    error.infoStatusHttp = data.infoStatusHttp
     error.extraData = extraData
     throw error
   }

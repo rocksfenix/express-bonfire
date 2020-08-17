@@ -1,6 +1,6 @@
 {
   "name": "express-bonfire",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "An utility and middleware for dispatch and handling errors on express.js",
   "main": "src/index.js",
   "scripts": {

@@ -20,7 +20,8 @@ const getSplitChar = require('./get-split-char')
 const getParsedInfo = (config) => {
   const {
     input,
-    dividers
+    dividers,
+    statusHTTP
   } = config
 
   const splitChar = getSplitChar(input, dividers)
@@ -31,7 +32,7 @@ const getParsedInfo = (config) => {
     .filter(item => (item !== '' || item !== undefined))
 
   const data = {
-    statusHTTP: null,
+    statusHTTP,
     message: '',
     infoStatusHttp: '',
     errorCode

@@ -1,6 +1,7 @@
 /* global describe, it */
 const expect = require('chai').expect
 const { dispatchError } = require('../src')
+const defaultConfig = require('../src/default-config')
 
 describe('Test dispatchError Function', () => {
   it('Test error message', () => {
@@ -49,6 +50,14 @@ describe('Test dispatchError Function', () => {
       dispatchError('202 |  Whoops!!!', { moreInfo: 'Here!' })
     } catch (error) {
       expect(error.extraData.moreInfo).to.equal('Here!')
+    }
+  })
+
+  it('Check default status http', () => {
+    try {
+      dispatchError('Whoops!!! :X')
+    } catch (error) {
+      expect(error.statusHTTP).to.equal(defaultConfig.statusHTTP)
     }
   })
 })
