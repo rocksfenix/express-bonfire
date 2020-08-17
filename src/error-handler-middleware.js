@@ -18,7 +18,11 @@ const handleError = (error, req, res) => {
     info.errorStack = error.stack
   }
 
-  const { message, statusHTTP, errorCode } = error
+  const {
+    message = 'Internal server error',
+    statusHTTP = 500,
+    errorCode = 0
+  } = error
 
   res
     .status(statusHTTP)
